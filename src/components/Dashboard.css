@@ -1,0 +1,62 @@
+.dashboard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 6px;
+  padding: 6px;
+  background: var(--bg-primary);
+}
+
+/* Default layout: chart on top, OI + PCR on bottom */
+.layout-default {
+  flex-direction: column;
+}
+
+.layout-default .top-area {
+  flex: 1.6;
+  min-height: 0;
+}
+
+.layout-default .bottom-area {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  min-height: 0;
+}
+
+.layout-default .bottom-area .widget-panel {
+  flex: 1;
+}
+
+/* Stacked layout: all three vertically */
+.layout-stacked .stacked-area {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-height: 0;
+}
+
+.layout-stacked .stacked-area .widget-panel {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Side by side: all three columns */
+.layout-side .side-area {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  flex: 1;
+  min-height: 0;
+}
+
+.layout-side .side-area .widget-panel {
+  flex: 1;
+  min-height: 0;
+}
+
+.panel-area {
+  min-height: 0;
+}
