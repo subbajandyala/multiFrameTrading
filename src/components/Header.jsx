@@ -8,6 +8,12 @@ const layouts = [
   { id: 'side', label: 'Side by Side' },
 ]
 
+function openAll(instrument) {
+  window.open(instrument.kiteUrl, '_blank', 'noopener,noreferrer')
+  setTimeout(() => window.open(instrument.sensibullUrl, '_blank', 'noopener,noreferrer'), 200)
+  setTimeout(() => window.open(instrument.niftytraderUrl, '_blank', 'noopener,noreferrer'), 400)
+}
+
 export default function Header({ layout, onLayoutChange, instrument, onInstrumentChange }) {
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
@@ -102,6 +108,16 @@ export default function Header({ layout, onLayoutChange, instrument, onInstrumen
           </div>
         )}
       </div>
+
+      {/* Open All */}
+      <button className="open-all-btn" onClick={() => openAll(instrument)} title={`Open Kite, Sensibull & NiftyTrader for ${instrument.symbol}`}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+        Open All 3
+      </button>
 
       {/* Layout switcher */}
       <div className="layout-switcher">
