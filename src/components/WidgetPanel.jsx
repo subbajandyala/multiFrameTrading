@@ -1,7 +1,94 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import './WidgetPanel.css'
 
-const EXTENSION_URL = 'https://github.com/subbajandyala/multiFrameTrading/tree/main/chrome-extension'
+const EXTENSION_URL  = 'https://github.com/subbajandyala/multiFrameTrading/tree/main/chrome-extension'
+const LOCAL_PROXY_URL = 'https://github.com/subbajandyala/multiFrameTrading/tree/main/local-proxy'
+
+function BlockedOverlay({ subtitle, color, onReload, onOpen }) {
+  const [tab, setTab] = useState('desktop')
+
+  return (
+    <div className="panel-overlay blocked-overlay">
+      <div className="blocked-content">
+        <div className="blocked-icon">🔌</div>
+        <h3 className="blocked-title">{subtitle} blocks embedding</h3>
+        <p className="blocked-desc">Choose your device to see the setup steps.</p>
+
+        <div className="device-tabs">
+          <button
+            className={`device-tab ${tab === 'desktop' ? 'active' : ''}`}
+            style={tab === 'desktop' ? { borderColor: color, color } : {}}
+            onClick={() => setTab('desktop')}
+          >
+            💻 Desktop / Android
+          </button>
+          <button
+            className={`device-tab ${tab === 'mobile' ? 'active' : ''}`}
+            style={tab === 'mobile' ? { borderColor: color, color } : {}}
+            onClick={() => setTab('mobile')}
+          >
+            📱 iPhone / Any device
+          </button>
+        </div>
+
+        {tab === 'desktop' && (
+          <div className="steps">
+            <p className="steps-title">Chrome Extension (one-time install)</p>
+            <div className="step">
+              <span className="step-num" style={{ background: color }}>1</span>
+              <span>Download the <a href={EXTENSION_URL} target="_blank" rel="noreferrer" style={{ color }}><code>chrome-extension</code></a> folder from GitHub</span>
+            </div>
+            <div className="step">
+              <span className="step-num" style={{ background: color }}>2</span>
+              <span>Open <code>chrome://extensions</code> → enable <strong>Developer mode</strong></span>
+            </div>
+            <div className="step">
+              <span className="step-num" style={{ background: color }}>3</span>
+              <span>Click <strong>Load unpacked</strong> → select the <code>chrome-extension</code> folder</span>
+            </div>
+            <div className="step">
+              <span className="step-num" style={{ background: color }}>4</span>
+              <span>Reload this page — all panels will show live content</span>
+            </div>
+            <p className="steps-note">Android users: use <strong>Kiwi Browser</strong> which supports Chrome extensions.</p>
+          </div>
+        )}
+
+        {tab === 'mobile' && (
+          <div className="steps">
+            <p className="steps-title">Local Proxy — run on your laptop, use on any phone</p>
+            <div className="step">
+              <span className="step-num" style={{ background: color }}>1</span>
+              <span>Clone the repo, then:<br /><code>cd local-proxy &amp;&amp; npm install &amp;&amp; node proxy.js</code></span>
+            </div>
+            <div className="step">
+              <span className="step-num" style={{ background: color }}>2</span>
+              <span>Phone WiFi → <strong>HTTP Proxy → Manual</strong><br />Server: your laptop IP &nbsp;·&nbsp; Port: <strong>8080</strong></span>
+            </div>
+            <div className="step">
+              <span className="step-num" style={{ background: color }}>3</span>
+              <span>Install the CA cert the proxy prints (AirDrop it to iPhone → tap → trust in Settings)</span>
+            </div>
+            <div className="step">
+              <span className="step-num" style={{ background: color }}>4</span>
+              <span>Open this dashboard on your phone — all 3 panels load live</span>
+            </div>
+            <p className="steps-note">Full instructions in the <a href={LOCAL_PROXY_URL} target="_blank" rel="noreferrer" style={{ color }}><code>local-proxy</code></a> folder on GitHub.</p>
+          </div>
+        )}
+
+        <div className="blocked-actions">
+          <button className="reload-btn" onClick={onReload} style={{ background: color }}>
+            Reload panel
+          </button>
+          <button className="open-fallback-btn" onClick={onOpen}>
+            Open in tab
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function WidgetPanel({ widget, instrument }) {
   const { id, title, subtitle, url, color, icon, tag } = widget
@@ -116,43 +203,12 @@ export default function WidgetPanel({ widget, instrument }) {
         )}
 
         {blocked && (
-          <div className="panel-overlay blocked-overlay">
-            <div className="blocked-content">
-              <div className="blocked-icon">🔌</div>
-              <h3 className="blocked-title">Extension required</h3>
-              <p className="blocked-desc">
-                {subtitle} blocks embedding. Install the <strong>Multi-Frame Trading Unlocker</strong> Chrome extension to load it directly in this panel.
-              </p>
-
-              <div className="steps">
-                <div className="step">
-                  <span className="step-num" style={{ background: color }}>1</span>
-                  <span>Download the <code>chrome-extension</code> folder from the <a href={EXTENSION_URL} target="_blank" rel="noreferrer" style={{ color }}>GitHub repo</a></span>
-                </div>
-                <div className="step">
-                  <span className="step-num" style={{ background: color }}>2</span>
-                  <span>Open <code>chrome://extensions</code> → enable <strong>Developer mode</strong></span>
-                </div>
-                <div className="step">
-                  <span className="step-num" style={{ background: color }}>3</span>
-                  <span>Click <strong>Load unpacked</strong> → select the <code>chrome-extension</code> folder</span>
-                </div>
-                <div className="step">
-                  <span className="step-num" style={{ background: color }}>4</span>
-                  <span>Come back here and click <strong>Reload</strong></span>
-                </div>
-              </div>
-
-              <div className="blocked-actions">
-                <button className="reload-btn" onClick={reload} style={{ background: color }}>
-                  Reload panel
-                </button>
-                <button className="open-fallback-btn" onClick={openInTab}>
-                  Open in tab
-                </button>
-              </div>
-            </div>
-          </div>
+          <BlockedOverlay
+            subtitle={subtitle}
+            color={color}
+            onReload={reload}
+            onOpen={openInTab}
+          />
         )}
       </div>
     </div>

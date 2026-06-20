@@ -189,6 +189,29 @@
   margin: 0;
 }
 
+/* Device tabs */
+.device-tabs {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.device-tab {
+  flex: 1;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.device-tab:hover { color: var(--text-secondary); }
+.device-tab.active { background: var(--bg-secondary); font-weight: 700; }
+
 /* Steps */
 .steps {
   display: flex;
@@ -242,6 +265,22 @@
 .step a:hover { text-decoration: underline; }
 
 .step strong { color: var(--text-primary); }
+
+.steps-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.steps-note {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-top: 4px;
+}
 
 /* Action buttons */
 .blocked-actions {
